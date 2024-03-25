@@ -16,7 +16,9 @@ public class EncryptCommand implements Command {
 
     @Override
     public void execute(FileSystem fs, Set<Character> options, String... args) {
-        fs.encryptFile(args[0], args[1]);
+        if (args.length < 3) {
+            fs.encryptFile(args[0], args[1]);
+        } else fs.encryptFile(args[0], args[1], args[2]);
     }
 
     @Override
