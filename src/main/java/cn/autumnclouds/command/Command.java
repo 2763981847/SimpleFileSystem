@@ -4,6 +4,7 @@ import cn.autumnclouds.filesystem.FileSystem;
 import cn.autumnclouds.filesystem.impl.SimpleFileSystem;
 
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Fu Qiujie
@@ -16,7 +17,7 @@ public interface Command {
         return Objects.equals(command, getName());
     }
 
-    Object execute(FileSystem fs, String options, String... args);
+    void execute(FileSystem fs, Set<Character> options, String... args);
 
     String getName();
 }

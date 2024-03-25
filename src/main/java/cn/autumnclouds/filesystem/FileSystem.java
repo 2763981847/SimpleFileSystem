@@ -17,15 +17,25 @@ public interface FileSystem {
 
     void deleteDirectory(String directoryName);
 
+    void echo(String content, String fileName);
+
     File[] listContents();
 
     boolean changeDirectory(String directoryName);
 
-    boolean copy(String sourcePath, String destinationPath);
+    void copy(String sourcePath, String destinationPath, boolean bg);
+
+    default void copy(String sourcePath, String destinationPath) {
+        copy(sourcePath, destinationPath, false);
+    }
 
     void encryptFile(String filePath, String encryptedFilePath);
 
     void decryptFile(String encryptedFilePath, String decryptedFilePath);
+
+    void compressFile(String filePath, String compressedFilePath);
+
+    void decompressFile(String filePath, String decompressedFilePath);
 
 
 }

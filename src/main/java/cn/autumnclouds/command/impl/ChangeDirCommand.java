@@ -5,6 +5,8 @@ import cn.autumnclouds.command.Command;
 import cn.autumnclouds.filesystem.FileSystem;
 import cn.hutool.core.util.StrUtil;
 
+import java.util.Set;
+
 /**
  * @author Fu Qiujie
  * @since 2024/3/16
@@ -14,9 +16,8 @@ public class ChangeDirCommand implements Command {
     private static final String NAME = "cd";
 
     @Override
-    public Object execute(FileSystem fs,String options, String... args) {
-        boolean success = fs.changeDirectory(args[0]);
-        return success ? null : "Directory not found";
+    public void execute(FileSystem fs, Set<Character> options, String... args) {
+        fs.changeDirectory(args[0]);
     }
 
     @Override

@@ -4,6 +4,8 @@ import cn.autumnclouds.annotation.CommandImpl;
 import cn.autumnclouds.command.Command;
 import cn.autumnclouds.filesystem.FileSystem;
 
+import java.util.Set;
+
 /**
  * @author Fu Qiujie
  * @since 2024/3/23
@@ -13,8 +15,8 @@ public class TouchCommand implements Command {
     public static final String NAME = "touch";
 
     @Override
-    public Object execute(FileSystem fs, String options, String... args) {
-        return fs.createFile(args[0]);
+    public void execute(FileSystem fs, Set<Character> options, String... args) {
+        fs.createFile(args[0]);
     }
 
     @Override

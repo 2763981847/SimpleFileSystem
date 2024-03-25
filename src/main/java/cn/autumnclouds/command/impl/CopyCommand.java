@@ -5,6 +5,7 @@ import cn.autumnclouds.command.Command;
 import cn.autumnclouds.filesystem.FileSystem;
 
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * @author Fu Qiujie
@@ -15,8 +16,9 @@ public class CopyCommand implements Command {
     private static final String NAME = "cp";
 
     @Override
-    public Object execute(FileSystem fs,String options, String... args) {
-        return fs.copy(args[0], args[1]) ? "Copy success" : "Copy failed";
+    public void execute(FileSystem fs, Set<Character> options, String... args) {
+        boolean runInBackground = options.contains('d');
+        fs.copy(args[0], args[1], runInBackground);
     }
 
     @Override

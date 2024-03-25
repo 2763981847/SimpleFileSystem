@@ -45,11 +45,13 @@ public class CommandInterpreter {
         }
         String[] tokens = commandString.split(" ");
         String commandName = tokens[0];
-        StringBuilder options = new StringBuilder();
+        Set<Character> options = new HashSet<>();
         List<String> args = new ArrayList<>();
         for (int i = 1; i < tokens.length; i++) {
             if (tokens[i].startsWith("-")) {
-                options.append(tokens[i].substring(1));
+                for (int j = 1; j < tokens[i].length(); j++) {
+                    options.add(tokens[i].charAt(j));
+                }
             } else {
                 args.add(tokens[i]);
             }
@@ -57,7 +59,7 @@ public class CommandInterpreter {
         commands.stream()
                 .filter(command -> command.isMatch(commandName))
                 .findFirst()
-                .ifPresentOrElse(command -> command.execute(fs, options.toString(), args.toArray(String[]::new))
+                .ifPresentOrElse(command -> command.execute(fs, options, args.toArray(String[]::new))
                         , () -> System.out.println("Unknown command: " + commandString));
         return "Unknown command: " + commandString;
     }

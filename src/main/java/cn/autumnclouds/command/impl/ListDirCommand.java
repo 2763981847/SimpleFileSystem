@@ -8,6 +8,7 @@ import cn.autumnclouds.filesystem.FileSystem;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Set;
 
 /**
  * @author Fu Qiujie
@@ -18,13 +19,12 @@ public class ListDirCommand implements Command {
     private static final String NAME = "ls";
 
     @Override
-    public Object execute(FileSystem fs, String options, String... args) {
+    public void execute(FileSystem fs, Set<Character> options, String... args) {
         File[] files = fs.listContents();
         FileVo[] fileVos = Arrays.stream(files).map(FileVo::new).sorted(getComparator(options)).toArray(FileVo[]::new);
         for (FileVo fileVo : fileVos) {
             System.out.println(fileVo);
         }
-        return fileVos;
     }
 
     @Override
@@ -32,19 +32,19 @@ public class ListDirCommand implements Command {
         return NAME;
     }
 
-    private Comparator<FileVo> getComparator(String options) {
+    private static Comparator<FileVo> getComparator(Set<Character> options) {
         Comparator<FileVo> comparator = Comparator.comparing(FileVo::getName);
         if (options == null) {
             return comparator;
         }
-        if (options.contains("n")) {
+        if (options.contains('n')) {
             comparator = Comparator.comparing(FileVo::getName);
-        } else if (options.contains("t")) {
+        } else if (options.contains('t')) {
             comparator = Comparator.comparing(FileVo::getLastModifiedTime);
-        } else if (options.contains("s")) {
+        } else if (options.contains('s')) {
             comparator = Comparator.comparing(FileVo::getSize);
         }
-        if (options.contains("r")) {
+        if (options.contains('r')) {
             comparator = comparator.reversed();
         }
         return comparator;
