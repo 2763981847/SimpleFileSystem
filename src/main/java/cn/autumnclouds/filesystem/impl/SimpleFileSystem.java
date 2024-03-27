@@ -37,7 +37,7 @@ public class SimpleFileSystem implements FileSystem {
     private static final ExecutorService THREAD_EXECUTOR = Executors.newSingleThreadExecutor();
 
     // 基础目录，所有文件系统操作都在这个目录下进行
-    private static final String BASE_DIRECTORY = "E:\\coding\\Java\\project\\fileSystem\\src\\main\\resources\\files\\";
+    private static final String BASE_DIRECTORY = Paths.get("src\\main\\resources\\files\\").toAbsolutePath().toString();
 
     // 当前工作目录
     private String currentDirectory = BASE_DIRECTORY;
@@ -117,21 +117,13 @@ public class SimpleFileSystem implements FileSystem {
      * @param directoryName 要删除的目录名称。
      */
     @Override
-    public void deleteDirectory(String directoryName) {
+    public void delete(String directoryName) {
         String absolutePath = convertPathIfNecessary(directoryName);
-        File file = new File(absolutePath);
-        if (!file.exists()) {
-            System.out.println("directory or file does not exist");
-            return;
-        }
-        if (file.isDirectory()) {
-            Arrays.stream(file.listFiles()).map(child -> child.toPath().toString()).forEach(this::deleteDirectory);
-        } else {
-            if (!file.delete()) {
-                System.out.println("failed to delete file");
-            }
+        if (!FileUtils.deleteDirectory(new File(absolutePath))) {
+            System.out.println("failed to delete directory");
         }
     }
+
 
     /**
      * 将内容写入文件。
@@ -172,7 +164,8 @@ public class SimpleFileSystem implements FileSystem {
     @Override
     public File[] listContents() {
         File directory = new File(currentDirectory);
-        return directory.listFiles();
+        File[] files = directory.listFiles();
+        return files == null ? new File[0] : files;
     }
 
     /**
@@ -213,7 +206,7 @@ public class SimpleFileSystem implements FileSystem {
      * @param silent          是否静默复制（静默复制时不在控制台打印进度）。
      */
     public void copyFile(String sourcePath, String destinationPath, boolean silent) {
-        Path basePath = Paths.get(BASE_DIRECTORY);
+        Path basePath = Paths.get(BASE_DIRECTORY).toAbsolutePath();
         Consumer<Double> consumer = progress -> {
         };
         if (!silent) {

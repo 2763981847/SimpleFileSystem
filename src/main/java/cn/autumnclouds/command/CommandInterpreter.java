@@ -68,12 +68,12 @@ public class CommandInterpreter {
      * 解释并执行用户输入的命令。
      *
      * @param commandString 用户输入的命令字符串
-     * @return 执行结果消息
      */
-    public String interpretAndExecute(String commandString) {
+    public void interpretAndExecute(String commandString) {
         // 如果命令字符串为空，则返回未知命令消息
         if (StrUtil.isBlank(commandString)) {
-            return "Unknown command: " + commandString;
+            System.out.println("Unknown command: " + commandString);
+            return;
         }
         // 解析命令字符串，获取命令名称、选项和参数
         String[] tokens = commandString.split(" ");
@@ -89,12 +89,12 @@ public class CommandInterpreter {
                 args.add(tokens[i]);
             }
         }
+
         // 查找匹配的命令对象，并执行对应的命令
         commands.stream()
                 .filter(command -> command.isMatch(commandName))
                 .findFirst()
                 .ifPresentOrElse(command -> command.execute(fs, options, args.toArray(String[]::new))
                         , () -> System.out.println("Unknown command: " + commandString));
-        return "Unknown command: " + commandString;
     }
 }

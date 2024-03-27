@@ -34,7 +34,9 @@ public class FileUtils {
             while ((bytesRead = fis.read(buffer)) != -1) {
                 fos.write(buffer, 0, bytesRead);
                 copiedBytes += bytesRead;
+                // 计算拷贝进度
                 double progress = (double) copiedBytes / fileSize * 100;
+                // 调用进度回调方法
                 consumer.accept(progress);
             }
         } catch (IOException e) {
@@ -112,6 +114,20 @@ public class FileUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static final boolean deleteDirectory(File file) {
+        if (!file.exists()) {
+            System.out.println("directory does not exist");
+            return false;
+        }
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            if (files != null) {
+                Arrays.stream(files).forEach(FileUtils::deleteDirectory);
+            }
+        }
+        return file.delete();
     }
 
     /**

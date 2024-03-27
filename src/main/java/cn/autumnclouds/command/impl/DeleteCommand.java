@@ -16,7 +16,7 @@ public class DeleteCommand implements Command {
 
     @Override
     public void execute(FileSystem fs, Set<Character> options, String... args) {
-        fs.deleteDirectory(args[0]);
+        fs.delete(args[0]);
     }
 
     @Override

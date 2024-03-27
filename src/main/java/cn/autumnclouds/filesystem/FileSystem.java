@@ -38,11 +38,11 @@ public interface FileSystem {
     void cat(String fileName);
 
     /**
-     * 删除具有指定名称的目录。
+     * 删除具有指定文件或目录
      *
-     * @param directoryName 要删除的目录名称。
+     * @param path  要删除的文件或目录的路径。
      */
-    void deleteDirectory(String directoryName);
+    void delete(String path);
 
     /**
      * 将内容写入文件。

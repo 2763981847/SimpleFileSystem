@@ -21,6 +21,10 @@ public class ListDirCommand implements Command {
     @Override
     public void execute(FileSystem fs, Set<Character> options, String... args) {
         File[] files = fs.listContents();
+        if (files == null || files.length == 0) {
+            System.out.println("Empty directory.");
+            return;
+        }
         FileVo[] fileVos = Arrays.stream(files).map(FileVo::new).sorted(getComparator(options)).toArray(FileVo[]::new);
         for (FileVo fileVo : fileVos) {
             System.out.println(fileVo);
